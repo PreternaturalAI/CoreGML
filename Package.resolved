@@ -6,7 +6,7 @@
       "location" : "https://github.com/vmanot/CorePersistence.git",
       "state" : {
         "branch" : "main",
-        "revision" : "a3bfd45386b4f6e68d98ed0384aeb24dc2c6f68c"
+        "revision" : "cf22e9af427a11f9df8291c6ae8b2b64a1c03929"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://github.com/vmanot/Expansions.git",
       "state" : {
         "branch" : "main",
-        "revision" : "e6999b5cbb64b96f82e9f84b6c7530c25e68fd9a"
+        "revision" : "eb7dbc7c52c0957bf754fb2806f3ee8b85e45194"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/vmanot/Merge.git",
       "state" : {
         "branch" : "master",
-        "revision" : "c271353a9e89cc87f912afd1fd89fd8eb411b026"
+        "revision" : "dfac686a091c4dc47a7ceb92581c7fb08c2b59f9"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/vmanot/Swallow.git",
       "state" : {
         "branch" : "master",
-        "revision" : "36de30d9156dc1088a5a5598c8147ee41b4323fa"
+        "revision" : "2cd46855d0acc6b8c25f878bc873cfd7c4a9d35c"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-async-algorithms",
       "state" : {
-        "revision" : "cb417003f962f9de3fc7852c1b735a1f1152a89a",
-        "version" : "1.0.0-beta.1"
+        "revision" : "da4e36f86544cdf733a40d59b3a2267e3a7bbf36",
+        "version" : "1.0.0"
       }
     },
     {
@@ -69,7 +69,7 @@
       "location" : "https://github.com/SwiftUIX/SwiftUIX.git",
       "state" : {
         "branch" : "master",
-        "revision" : "35b60c8e709987c73ee6798aefcfc91ea390d5f6"
+        "revision" : "a79cba8799a91f06a18cc5c590ce58ff6a7456e2"
       }
     }
   ],
