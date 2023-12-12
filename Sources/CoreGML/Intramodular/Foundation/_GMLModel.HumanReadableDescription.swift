@@ -3,9 +3,10 @@
 //
 
 import Swallow
+import CoreML
 
-extension MachineLearningModel {
-    public struct HighLevelDescription: Codable, Hashable, Sendable {
+extension _GMLModel {
+    public struct HumanReadableDescription: Codable, Hashable, Sendable {
         public let rawValue: [Descriptor]
         
         public init(rawValue: [Descriptor]) {
@@ -14,7 +15,7 @@ extension MachineLearningModel {
     }
 }
 
-extension MachineLearningModel {
+extension _GMLModel.HumanReadableDescription {
     public enum Descriptor: Codable, Hashable, Sendable {
         public enum _TypeDescriptor: String, Codable, Hashable, Sendable {
             case largeLanguageModel = "llm"
