@@ -6,6 +6,40 @@ import CorePersistence
 import Foundation
 import Swallow
 
+@HadeanIdentifier("rajil-pagik-tibah-jibod")
+@RuntimeDiscoverable
+public enum _GMLModelIdentifierScope: Codable, Hashable, Sendable {
+    case one(_GMLModelIdentifier)
+    case choiceOf(Set<_GMLModelIdentifier>)
+    
+    public var _oneValue: _GMLModelIdentifier? {
+        guard case .one(let value) = self else {
+            if case .choiceOf(let set) = self, let value = try? set.toCollectionOfOne().first {
+                return value
+            }
+            
+            return nil
+        }
+
+        return value
+    }
+    
+    public init(_ identifier: _GMLModelIdentifier) {
+        self = .one(identifier)
+    }
+    
+    public func `as`<T: _GMLModelIdentifierRepresentable>(
+        _ type: T.Type
+    ) throws -> T {
+        switch self {
+            case .one(let identifier):
+                return try T(from: identifier)
+            case .choiceOf(let identifiers):
+                return try identifiers.compactMap({ try? T(from: $0) }).toCollectionOfOne().first
+        }
+    }
+}
+
 /// A general purpose type to identify distinct machine-learning models.
 ///
 /// It's intended for use with both local and API-only models.
@@ -43,25 +77,17 @@ public struct _GMLModelIdentifier: Hashable, Sendable {
             if components.count == 1 {
                 let component = components.first!
                 
-                if let model = _Anthropic_Model(rawValue: component) {
-                    self.init(
-                        provider: .anthropic,
-                        name: model.rawValue,
-                        revision: nil
-                    )
-                    
-                    return
-                } else if let model = _OpenAI_Model(rawValue: component) {
-                    self.init(
-                        provider: .openAI,
-                        name: model.rawValue,
-                        revision: nil
-                    )
-                    
-                    return
-                } else {
+                guard let provider = Self._guessPrimaryProvider(forRawIdentifier: component) else {
                     return nil
                 }
+                
+                self.init(
+                    provider: provider,
+                    name: component,
+                    revision: nil
+                )
+                
+                return
             } else {
                 return nil
             }
@@ -72,6 +98,20 @@ public struct _GMLModelIdentifier: Hashable, Sendable {
             name: components.last!,
             revision: nil
         )
+    }
+    
+    private static func _guessPrimaryProvider(
+        forRawIdentifier identifier: String
+    ) -> _GMLModelIdentifier.Provider? {
+        if _Anthropic_Model(rawValue: identifier) != nil {
+            return ._Anthropic
+        } else if _Mistral_Model(rawValue: identifier) != nil {
+            return ._Mistral
+        } else if _OpenAI_Model(rawValue: identifier) != nil {
+            return ._OpenAI
+        }
+        
+        return nil
     }
 }
 
@@ -134,6 +174,12 @@ extension _GMLModelIdentifier: Codable {
     }
 }
 
+extension _GMLModelIdentifier: ExpressibleByStringLiteral {
+    public init(stringLiteral value: StringLiteralType) {
+        self = Self(description: value)!
+    }
+}
+
 extension _GMLModelIdentifier: _GMLModelIdentifierRepresentable {
     public init(from identifier: _GMLModelIdentifier) throws {
         self = identifier
@@ -160,6 +206,12 @@ extension _GMLModelIdentifier {
         case claud_instant_1 = "claude-instant-1"
     }
     
+    private enum _Mistral_Model: String {
+        case mistral_tiny = "mistral-tiny"
+        case mistral_small = "mistral-small"
+        case mistral_medium = "mistral-medium"
+    }
+
     private enum _OpenAI_Model: String {
         case gpt_3_5_turbo = "gpt-3.5-turbo"
         case gpt_3_5_turbo_16k = "gpt-3.5-turbo-16k"
